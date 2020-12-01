@@ -15,20 +15,33 @@ func main() {
 		log.Fatalf("Unable to continue: %s", err.Error())
 	}
 
-	expenses, err := getExpesnes(targetSum, expenseReport)
+	// Part 1
+	fmt.Println("Part 1")
+	expenses1, err := getExpenses(targetSum, expenseReport, 2)
 	if err != nil {
-		fmt.Println("Unable to cmplete")
-		return
+		fmt.Println("Not found: ", err.Error())
 	}
+	printResults(&expenses1)
 
-	result := 1
-	for _, expense := range expenses{
-		result *= expense
+	// Part 2
+	fmt.Println("Part 2")
+	expenses2, err := getExpenses(targetSum, expenseReport, 3)
+	if err != nil {
+		fmt.Println("Not found: ", err.Error())
 	}
-
-
-	fmt.Printf("Expense research result: %d\n", result)
+	printResults(&expenses2)
 }
+
+func printResults(expenses *map[int]bool) {
+	if len(*expenses) > 0 {
+		result := 1
+		for expense := range *expenses {
+			result *= expense
+		}
+		fmt.Printf("Expense research result: %d\n", result)
+	}
+}
+
 
 func loadExpenseReport(path string) ([]int, error){
 	entries := []int{}
@@ -36,6 +49,9 @@ func loadExpenseReport(path string) ([]int, error){
 	if err != nil {
 		return nil, fmt.Errorf("Unable to load expense report: %s", err.Error())
 	}
+	defer func() {
+		_ = reportFile.Close()
+	}()
 
 	reportScanner := bufio.NewScanner(reportFile)
 	reportScanner.Split(bufio.ScanWords)
@@ -49,25 +65,44 @@ func loadExpenseReport(path string) ([]int, error){
 	return entries, reportScanner.Err()
 }
 
+func getExpenses(targetSum int, expenses []int, entries uint) (map[int]bool, error){
+	seen := make(map[int]bool)
+	results := make(map[int]bool)
 
-func getExpesnes(targetSum int, expenses []int) ([]int, error){
-
-	seen := []int{}
-	results := []int{}
 	for _, expense := range expenses {
-		seen = append(seen, expense)
+		seen[expense] = true
 		searchVal := targetSum - expense
-		match, found := find(searchVal, seen)
-		if found {
-			results = append(results, expense, match)
-			return results, nil
+
+		if  entries > 2{
+			subEntries := entries - 1
+			subResults, err := getExpenses(searchVal, expenses, subEntries)
+			if err != nil {
+				continue
+			}
+			results[expense] = true
+			for result := range subResults {
+				results[result] = true
+			}
+			if len(results) == int(entries) {
+				return results, nil
+			}
+		} else{
+			match, found := find(searchVal, seen)
+			if found {
+				results[expense] = true
+				results[match] = true
+				return results, nil
+			}
 		}
+
 	}
-	return results, fmt.Errorf("Pair not found")
+	return results, fmt.Errorf("Criteria not met.  Could not find %d expenses that add up to %d",
+		entries,
+		targetSum)
 }
 
-func find(needle int, haystack []int)(int, bool){
-	for _, item := range haystack {
+func find(needle int, haystack map[int]bool)(int, bool){
+	for item := range haystack {
 		if item == needle {
 			return item, true
 		}
