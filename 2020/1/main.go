@@ -86,13 +86,13 @@ func getExpenses(targetSum int, expenses []int, entries uint) (map[int]bool, err
 			if len(results) == int(entries) {
 				return results, nil
 			}
-		} else{
-			match, found := find(searchVal, seen)
-			if found {
-				results[expense] = true
-				results[match] = true
-				return results, nil
-			}
+		}
+
+		match, found := find(searchVal, seen)
+		if found {
+			results[expense] = true
+			results[match] = true
+			return results, nil
 		}
 
 	}
