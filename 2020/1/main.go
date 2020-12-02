@@ -17,7 +17,7 @@ func main() {
 
 	// Part 1
 	fmt.Println("Part 1")
-	expenses1, err := getExpenses(targetSum, expenseReport, 4)
+	expenses1, err := getExpenses(targetSum, expenseReport, 2)
 	if err != nil {
 		fmt.Println("Not found: ", err.Error())
 	}
