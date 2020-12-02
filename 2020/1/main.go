@@ -17,7 +17,7 @@ func main() {
 
 	// Part 1
 	fmt.Println("Part 1")
-	expenses1, err := getExpenses(targetSum, expenseReport, 2)
+	expenses1, err := getExpenses(targetSum, expenseReport, 4)
 	if err != nil {
 		fmt.Println("Not found: ", err.Error())
 	}
@@ -102,10 +102,8 @@ func getExpenses(targetSum int, expenses []int, entries uint) (map[int]bool, err
 }
 
 func find(needle int, haystack map[int]bool)(int, bool){
-	for item := range haystack {
-		if item == needle {
-			return item, true
-		}
+	if haystack[needle] {
+		return needle, true
 	}
 	return -1, false
 }
