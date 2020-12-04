@@ -28,9 +28,8 @@ func main() {
 	part1 := &TreeSearches{
 		Searches: []*TreeSearch{
 			{
-				XStep:    3,
-				YStep:    1,
-				Position: 3,
+				XStep: 3,
+				YStep: 1,
 			},
 		},
 	}
@@ -46,29 +45,24 @@ func main() {
 	part2 := &TreeSearches{
 		Searches: []*TreeSearch{
 			{
-				XStep:    1,
-				YStep:    1,
-				Position: 1,
+				XStep: 1,
+				YStep: 1,
 			},
 			{
-				XStep:    3,
-				YStep:    1,
-				Position: 3,
+				XStep: 3,
+				YStep: 1,
 			},
 			{
-				XStep:    5,
-				YStep:    1,
-				Position: 5,
+				XStep: 5,
+				YStep: 1,
 			},
 			{
-				XStep:    7,
-				YStep:    1,
-				Position: 7,
+				XStep: 7,
+				YStep: 1,
 			},
 			{
-				XStep:    1,
-				YStep:    2,
-				Position: 1,
+				XStep: 1,
+				YStep: 2,
 			},
 		},
 	}
@@ -112,6 +106,9 @@ func countTrees(path string, searches *TreeSearches) (*TreeSearches, error) {
 
 		for _, search := range searches.Searches {
 			if currentLine%search.YStep == 0 {
+				if search.Position == 0 {
+					search.Position += search.XStep
+				}
 				linePos := search.Position % lineLength
 				if string(entry[linePos]) == tree {
 					search.Trees += 1
