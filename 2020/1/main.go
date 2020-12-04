@@ -42,8 +42,7 @@ func printResults(expenses *map[int]bool) {
 	}
 }
 
-
-func loadExpenseReport(path string) ([]int, error){
+func loadExpenseReport(path string) ([]int, error) {
 	entries := []int{}
 	reportFile, err := os.OpenFile(path, os.O_RDONLY, 0400)
 	if err != nil {
@@ -65,7 +64,7 @@ func loadExpenseReport(path string) ([]int, error){
 	return entries, reportScanner.Err()
 }
 
-func getExpenses(targetSum int, expenses []int, entries uint) (map[int]bool, error){
+func getExpenses(targetSum int, expenses []int, entries uint) (map[int]bool, error) {
 	seen := make(map[int]bool)
 	results := make(map[int]bool)
 
@@ -73,7 +72,7 @@ func getExpenses(targetSum int, expenses []int, entries uint) (map[int]bool, err
 		seen[expense] = true
 		searchVal := targetSum - expense
 
-		if  entries > 2{
+		if entries > 2 {
 			subEntries := entries - 1
 			subResults, err := getExpenses(searchVal, expenses, subEntries)
 			if err != nil {
@@ -101,7 +100,7 @@ func getExpenses(targetSum int, expenses []int, entries uint) (map[int]bool, err
 		targetSum)
 }
 
-func find(needle int, haystack map[int]bool)(int, bool){
+func find(needle int, haystack map[int]bool) (int, bool) {
 	if haystack[needle] {
 		return needle, true
 	}

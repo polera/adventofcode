@@ -12,10 +12,10 @@ const (
 )
 
 type TreeSearch struct {
-	YStep int
-	XStep int
+	YStep    int
+	XStep    int
 	Position int
-	Trees int
+	Trees    int
 }
 
 type TreeSearches struct {
@@ -25,11 +25,11 @@ type TreeSearches struct {
 func main() {
 
 	// Part 1
-	part1 := &TreeSearches {
+	part1 := &TreeSearches{
 		Searches: []*TreeSearch{
 			{
-				XStep: 3,
-				YStep: 1,
+				XStep:    3,
+				YStep:    1,
 				Position: 3,
 			},
 		},
@@ -43,31 +43,31 @@ func main() {
 	}
 
 	// Part 2
-	part2 := &TreeSearches {
+	part2 := &TreeSearches{
 		Searches: []*TreeSearch{
 			{
-				XStep: 1,
-				YStep: 1,
+				XStep:    1,
+				YStep:    1,
 				Position: 1,
 			},
 			{
-				XStep: 3,
-				YStep: 1,
+				XStep:    3,
+				YStep:    1,
 				Position: 3,
 			},
 			{
-				XStep: 5,
-				YStep: 1,
+				XStep:    5,
+				YStep:    1,
 				Position: 5,
 			},
 			{
-				XStep: 7,
-				YStep: 1,
+				XStep:    7,
+				YStep:    1,
 				Position: 7,
 			},
 			{
-				XStep: 1,
-				YStep: 2,
+				XStep:    1,
+				YStep:    2,
 				Position: 1,
 			},
 		},
@@ -85,7 +85,7 @@ func main() {
 
 }
 
-func countTrees(path string, searches *TreeSearches) (*TreeSearches, error){
+func countTrees(path string, searches *TreeSearches) (*TreeSearches, error) {
 
 	slopeMap, err := os.OpenFile(path, os.O_RDONLY, 0400)
 	if err != nil {
@@ -103,7 +103,7 @@ func countTrees(path string, searches *TreeSearches) (*TreeSearches, error){
 		entry := slopeMapScanner.Text()
 
 		// All the lines are the same length, check this once
-		if currentLine == 0{
+		if currentLine == 0 {
 			lineLength = len(entry)
 			currentLine += 1
 			// No action is taken on the first line of input
@@ -111,17 +111,16 @@ func countTrees(path string, searches *TreeSearches) (*TreeSearches, error){
 		}
 
 		for _, search := range searches.Searches {
-			if currentLine % search.YStep == 0 {
-					linePos := search.Position % lineLength
-					if string(entry[linePos]) == tree {
-						search.Trees += 1
-					}
-					search.Position += search.XStep
+			if currentLine%search.YStep == 0 {
+				linePos := search.Position % lineLength
+				if string(entry[linePos]) == tree {
+					search.Trees += 1
 				}
+				search.Position += search.XStep
+			}
 		}
 		currentLine += 1
 	}
 
 	return searches, slopeMapScanner.Err()
 }
-

@@ -21,12 +21,12 @@ func main() {
 
 type PasswordRecord struct {
 	Requirement Requirement
-	Password string
+	Password    string
 }
 
 type Requirement struct {
-	Min int
-	Max int
+	Min       int
+	Max       int
 	Character string
 }
 
@@ -58,7 +58,7 @@ func (p *PasswordRecord) isValidV1() bool {
 
 	occurrences := strings.Count(p.Password, p.Requirement.Character)
 	// Must contain character
-	if occurrences < 1{
+	if occurrences < 1 {
 		return false
 	}
 
@@ -74,7 +74,7 @@ func (p *PasswordRecord) isValidV2() bool {
 	occurrences := strings.Count(p.Password, p.Requirement.Character)
 
 	// Must contain character
-	if occurrences < 1{
+	if occurrences < 1 {
 		return false
 	}
 
@@ -91,17 +91,16 @@ func (p *PasswordRecord) isValidV2() bool {
 	}
 
 	// If second position contains character, first may not
-	if len(p.Password) >= p.Requirement.Max -1 &&
-		string(p.Password[p.Requirement.Max-1]) == p.Requirement.Character  &&
-		string(p.Password[p.Requirement.Min-1]) != p.Requirement.Character{
+	if len(p.Password) >= p.Requirement.Max-1 &&
+		string(p.Password[p.Requirement.Max-1]) == p.Requirement.Character &&
+		string(p.Password[p.Requirement.Min-1]) != p.Requirement.Character {
 		return true
 	}
 
 	return false
 }
 
-
-func loadValidPwRecords(path string) ([]*PasswordRecord, []*PasswordRecord, error){
+func loadValidPwRecords(path string) ([]*PasswordRecord, []*PasswordRecord, error) {
 	var v1records []*PasswordRecord
 	var v2records []*PasswordRecord
 	pwDatabase, err := os.OpenFile(path, os.O_RDONLY, 0400)
