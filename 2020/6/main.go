@@ -21,24 +21,20 @@ func main() {
 
 	fmt.Println("Part 1 - yes counts: ", yesCount)
 
-	collectedForms2, err := readFormsV2("puzzle_input.txt")
+	formScores, err := readFormsV2("puzzle_input.txt")
 	if err != nil {
 		log.Fatalf("unable to continue: %s", err.Error())
 	}
 
-	yesCount2 := 0
-	for _, formScore := range collectedForms2 {
-		yesCount2 += formScore
-	}
-	fmt.Println("Part 2 - yes counts: ", yesCount2)
+	fmt.Println("Part 2 - yes counts: ", formScores)
 }
 
-func readFormsV2(path string) ([]int, error) {
+func readFormsV2(path string) (int, error) {
 	yesAnswers := make(map[string]int)
-	var formScores []int
+	formScores := 0
 	forms, err := os.OpenFile(path, os.O_RDONLY, 0400)
 	if err != nil {
-		return nil, fmt.Errorf("unable to load customs forms: %s", err.Error())
+		return -1, fmt.Errorf("unable to load customs forms: %s", err.Error())
 	}
 	defer func() {
 		_ = forms.Close()
@@ -57,23 +53,19 @@ func readFormsV2(path string) ([]int, error) {
 			groupCount += 1
 			continue
 		}
-		formScore := 0
 		for key := range yesAnswers {
 			if yesAnswers[key] == groupCount {
-				formScore += 1
+				formScores += 1
 			}
 		}
-		formScores = append(formScores, formScore)
 		yesAnswers = make(map[string]int)
 		groupCount = 0
 	}
-	formScore := 0
 	for key := range yesAnswers {
 		if yesAnswers[key] == groupCount {
-			formScore += 1
+			formScores += 1
 		}
 	}
-	formScores = append(formScores, formScore)
 	return formScores, nil
 }
 
