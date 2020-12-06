@@ -63,10 +63,8 @@ func getSeatIds(path string) ([]int, error) {
 		col := pass[7:]
 
 		// Oh, hey, this is binary
-		row = strings.ReplaceAll(row, "F", "0")
-		row = strings.ReplaceAll(row, "B", "1")
-		col = strings.ReplaceAll(col, "L", "0")
-		col = strings.ReplaceAll(col, "R", "1")
+		row = strings.ReplaceAll(strings.ReplaceAll(row, "F", "0"), "B", "1")
+		col = strings.ReplaceAll(strings.ReplaceAll(col, "L", "0"), "R", "1")
 
 		rowVal, _ := strconv.ParseInt(row, 2, 64)
 		colVal, _ := strconv.ParseInt(col, 2, 64)
