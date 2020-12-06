@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-	"math"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -59,33 +59,19 @@ func getSeatIds(path string) ([]int, error) {
 	boardingPassScanner.Split(bufio.ScanLines)
 	for boardingPassScanner.Scan() {
 		pass := boardingPassScanner.Text()
-		rowLow := 0.0
-		rowHigh := 127.0
-		columnLow := 0.0
-		columnHigh := 7.0
+		row := pass[0:7]
+		col := pass[7:]
 
-		splitPass := strings.Split(pass, "")
-		for _, splitVal := range splitPass {
-			switch splitVal {
-			case "F":
-				// take the lower half
-				newHigh := math.Floor((rowLow + rowHigh) / 2)
-				rowHigh = newHigh
-			case "B":
-				// take the upper half
-				newLow := math.Ceil((rowLow + rowHigh) / 2)
-				rowLow = newLow
-			case "L":
-				// take the lower half
-				newHigh := math.Floor((columnLow + columnHigh) / 2)
-				columnHigh = newHigh
-			case "R":
-				// take the upper half
-				newLow := math.Ceil((columnLow + columnHigh) / 2)
-				columnLow = newLow
-			}
-		}
-		seatId := int(rowLow*8 + columnLow)
+		// Oh, hey, this is binary
+		row = strings.ReplaceAll(row, "F", "0")
+		row = strings.ReplaceAll(row, "B", "1")
+		col = strings.ReplaceAll(col, "L", "0")
+		col = strings.ReplaceAll(col, "R", "1")
+
+		rowVal, _ := strconv.ParseInt(row, 2, 64)
+		colVal, _ := strconv.ParseInt(col, 2, 64)
+
+		seatId := int(rowVal*8 + colVal)
 		seatIds = append(seatIds, seatId)
 	}
 	return seatIds, boardingPassScanner.Err()
