@@ -18,7 +18,7 @@ func main() {
 	}
 
 	// Part 1: Get the highest seat Id
-	sort.Sort(sort.IntSlice(seatIds))
+	sort.Ints(seatIds)
 	fmt.Println("Part 1 - Highest seat ID: ", seatIds[len(seatIds)-1])
 
 	// Part 2: Find my seat ID
