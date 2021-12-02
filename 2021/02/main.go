@@ -26,7 +26,7 @@ func main() {
 	fmt.Printf("h: %d d: %d\n", hPos, depth)
 	fmt.Printf("Result: %d\n", hPos*depth)
 
-	// Part 1
+	// Part 2
 	fmt.Println("Part 2")
 	p2hPos, p2depth := runCourseWithAim(planCourse)
 	fmt.Printf("h: %d d: %d\n", p2hPos, p2depth)
